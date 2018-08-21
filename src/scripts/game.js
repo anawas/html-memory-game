@@ -8,21 +8,30 @@ function flipCard() {
     if (!hasFlippedCard) {
         hasFlippedCard = true;
         firstCard = this;
-    } else {
-        hasFlippedCard = false;
-        secondCard = this;
+        return;
+    } 
+    
+    hasFlippedCard = false;
+    secondCard = this;
+    checkForMatch();
+}
 
-        if (firstCard.dataset.animal === secondCard.dataset.animal) {
-            // it's a match
-            firstCard.removeEventListener("click", flipCard);
-            secondCard.removeEventListener("click", flipCard);
-        } else {
-            setTimeout(() => {
-                firstCard.classList.remove("flip");
-                secondCard.classList.remove("flip");
-            }, 1500);
-        }
-    }
+function checkForMatch() {
+    let isMatch = firstCard.dataset.animal === secondCard.dataset.animal;
+
+    isMatch ? disableCards() : unflipCards();
+}
+
+function disableCards() {
+    firstCard.removeEventListener("click", flipCard);
+    secondCard.removeEventListener("click", flipCard);
+}
+
+function unflipCards() {
+    setTimeout(() => {
+        firstCard.classList.remove("flip");
+        secondCard.classList.remove("flip");
+    }, 1500);
 }
 
 cards.forEach(card => card.addEventListener("click", flipCard));
